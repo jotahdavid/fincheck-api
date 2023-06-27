@@ -17,4 +17,17 @@ export class BankAccountsRepository {
       },
     });
   }
+
+  findAllByUserId(userId: string) {
+    return this.prismaService.bankAccount.findMany({
+      where: { userId },
+      select: {
+        id: true,
+        name: true,
+        initialBalance: true,
+        color: true,
+        type: true,
+      },
+    });
+  }
 }

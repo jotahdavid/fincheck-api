@@ -16,8 +16,8 @@ export class BankAccountsService {
     });
   }
 
-  findAll() {
-    return `This action returns all bankAccounts`;
+  findAllByUserId(userId: string) {
+    return this.bankAccountsRepository.findAllByUserId(userId);
   }
 
   findOne(id: number) {
