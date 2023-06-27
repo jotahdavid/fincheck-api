@@ -25,6 +25,12 @@ export class UsersRepository {
     });
   }
 
+  async findByEmail(findByEmailDto: FindByEmailDto) {
+    return this.prismaService.user.findUnique({
+      where: { email: findByEmailDto.email },
+    });
+  }
+
   async checkIfUserExistsByEmail(findByEmailDto: FindByEmailDto) {
     const user = await this.prismaService.user.findUnique({
       where: {
