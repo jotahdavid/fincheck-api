@@ -4,10 +4,16 @@ import {
   IsNotEmpty,
   IsNumber,
   IsString,
+  IsUUID,
 } from 'class-validator';
 import { BankAccountType } from 'src/modules/bank-accounts/entities/BankAccount';
 
 export class UpdateBankAccountDto {
+  @IsString()
+  @IsUUID()
+  @IsNotEmpty()
+  id: string;
+
   @IsString()
   @IsNotEmpty()
   name: string;
