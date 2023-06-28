@@ -53,4 +53,10 @@ export class BankAccountsRepository {
       },
     });
   }
+
+  delete(bankAccountId: string) {
+    return this.prismaService.bankAccount.delete({
+      where: { id: bankAccountId },
+    });
+  }
 }
