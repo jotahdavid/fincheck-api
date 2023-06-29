@@ -14,15 +14,11 @@ export class TransactionsService {
   ) {}
 
   async create(userId: string, createTransactionDto: CreateTransactionDto) {
-    await this.validateBankAccountOwnershipService.validate(
+    await this.validatEntitiesOwnership({
       userId,
-      createTransactionDto.bankAccountId,
-    );
-
-    await this.validateCategoryOwnershipService.validate(
-      userId,
-      createTransactionDto.categoryId,
-    );
+      bankAccountId: createTransactionDto.bankAccountId,
+      categoryId: createTransactionDto.categoryId,
+    });
 
     return this.transactionsRepository.create({
       userId,
@@ -44,5 +40,25 @@ export class TransactionsService {
 
   remove(id: number) {
     return `This action removes a #${id} transaction`;
+  }
+
+  private async validatEntitiesOwnership({
+    userId,
+    bankAccountId,
+    categoryId,
+  }: {
+    userId: string;
+    bankAccountId?: string;
+    categoryId?: string;
+  }) {
+    await Promise.all([
+      bankAccountId &&
+        this.validateBankAccountOwnershipService.validate(
+          userId,
+          bankAccountId,
+        ),
+      categoryId &&
+        this.validateCategoryOwnershipService.validate(userId, categoryId),
+    ]);
   }
 }
