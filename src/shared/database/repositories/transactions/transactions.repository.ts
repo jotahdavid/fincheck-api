@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma.service';
+import { CreateTransactionDto } from './dto/create-transaction.dto';
 
 @Injectable()
 export class TransactionsRepository {
@@ -16,6 +17,20 @@ export class TransactionsRepository {
         value: true,
         date: true,
         type: true,
+      },
+    });
+  }
+
+  create(createTransactionDto: CreateTransactionDto) {
+    return this.prismaService.transaction.create({
+      data: {
+        userId: createTransactionDto.userId,
+        bankAccountId: createTransactionDto.bankAccountId,
+        categoryId: createTransactionDto.categoryId,
+        name: createTransactionDto.name,
+        value: createTransactionDto.value,
+        date: createTransactionDto.date,
+        type: createTransactionDto.type,
       },
     });
   }
