@@ -1,16 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { TransactionsRepository } from 'src/shared/database/repositories/transactions/transactions.repository';
-import { CategoriesRepository } from 'src/shared/database/repositories/categories/categories.repository';
 import { ValidateBankAccountOwnershipService } from '../bank-accounts/services/validate-bank-account-ownership.service';
+import { ValidateCategoryOwnershipService } from '../categories/services/validate-category-ownership.service';
 
 @Injectable()
 export class TransactionsService {
   constructor(
     private readonly transactionsRepository: TransactionsRepository,
-    private readonly categoriesRepository: CategoriesRepository,
     private readonly validateBankAccountOwnershipService: ValidateBankAccountOwnershipService,
+    private readonly validateCategoryOwnershipService: ValidateCategoryOwnershipService,
   ) {}
 
   async create(userId: string, createTransactionDto: CreateTransactionDto) {
@@ -19,14 +19,10 @@ export class TransactionsService {
       createTransactionDto.bankAccountId,
     );
 
-    const category = await this.categoriesRepository.findById({
-      id: createTransactionDto.categoryId,
+    await this.validateCategoryOwnershipService.validate(
       userId,
-    });
-
-    if (!category) {
-      throw new NotFoundException('Category not found.');
-    }
+      createTransactionDto.categoryId,
+    );
 
     return this.transactionsRepository.create({
       userId,
