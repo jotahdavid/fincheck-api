@@ -59,4 +59,10 @@ export class TransactionsRepository {
       },
     });
   }
+
+  delete(transactionId: string) {
+    return this.prismaService.transaction.delete({
+      where: { id: transactionId },
+    });
+  }
 }

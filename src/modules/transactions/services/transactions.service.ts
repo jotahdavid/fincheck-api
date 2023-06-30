@@ -50,8 +50,10 @@ export class TransactionsService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} transaction`;
+  async remove(userId: string, transactionId: string) {
+    await this.validatEntitiesOwnership({ userId, transactionId });
+    await this.transactionsRepository.delete(transactionId);
+    return null;
   }
 
   private async validatEntitiesOwnership({
