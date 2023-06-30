@@ -28,8 +28,8 @@ export class TransactionsService {
     });
   }
 
-  findAllByUserId(userId: string) {
-    return this.transactionsRepository.findAllByUserId(userId);
+  findAllByUserId(userId: string, filters: { month: number; year: number }) {
+    return this.transactionsRepository.findAllByUserId(userId, filters);
   }
 
   async update(
