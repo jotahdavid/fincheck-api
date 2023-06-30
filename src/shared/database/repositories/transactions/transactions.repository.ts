@@ -17,7 +17,10 @@ export class TransactionsRepository {
     });
   }
 
-  findAllByUserId(userId: string, filters: { month: number; year: number }) {
+  findAllByUserId(
+    userId: string,
+    filters: { month: number; year: number; bankAccountId?: string },
+  ) {
     return this.prismaService.transaction.findMany({
       where: {
         userId,
@@ -25,6 +28,7 @@ export class TransactionsRepository {
           gte: new Date(Date.UTC(filters.year, filters.month)),
           lt: new Date(Date.UTC(filters.year, filters.month + 1)),
         },
+        bankAccountId: filters.bankAccountId,
       },
       select: {
         id: true,

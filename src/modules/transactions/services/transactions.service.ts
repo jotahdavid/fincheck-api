@@ -28,7 +28,15 @@ export class TransactionsService {
     });
   }
 
-  findAllByUserId(userId: string, filters: { month: number; year: number }) {
+  async findAllByUserId(
+    userId: string,
+    filters: { month: number; year: number; bankAccountId?: string },
+  ) {
+    await this.validatEntitiesOwnership({
+      userId,
+      bankAccountId: filters.bankAccountId,
+    });
+
     return this.transactionsRepository.findAllByUserId(userId, filters);
   }
 
