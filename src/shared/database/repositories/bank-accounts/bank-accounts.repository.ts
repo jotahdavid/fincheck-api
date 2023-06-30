@@ -26,6 +26,12 @@ export class BankAccountsRepository {
         initialBalance: true,
         color: true,
         type: true,
+        transactions: {
+          select: {
+            type: true,
+            value: true,
+          },
+        },
       },
     });
   }
