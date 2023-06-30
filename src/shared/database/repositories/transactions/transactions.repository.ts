@@ -3,6 +3,7 @@ import { PrismaService } from '../../prisma.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { FindTransactionByIdDto } from './dto/find-transaction-by-id.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { TransactionType } from 'src/modules/transactions/entities/Transaction';
 
 @Injectable()
 export class TransactionsRepository {
@@ -19,7 +20,12 @@ export class TransactionsRepository {
 
   findAllByUserId(
     userId: string,
-    filters: { month: number; year: number; bankAccountId?: string },
+    filters: {
+      month: number;
+      year: number;
+      bankAccountId?: string;
+      type?: TransactionType;
+    },
   ) {
     return this.prismaService.transaction.findMany({
       where: {
@@ -29,6 +35,7 @@ export class TransactionsRepository {
           lt: new Date(Date.UTC(filters.year, filters.month + 1)),
         },
         bankAccountId: filters.bankAccountId,
+        type: filters.type,
       },
       select: {
         id: true,
