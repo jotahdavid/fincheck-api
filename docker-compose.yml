@@ -1,0 +1,11 @@
+version: "2.7"
+services:
+  db:
+    image: postgres
+    restart: always
+    container_name: fincheck_db
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASS}
+    ports:
+      - 5432:5432
