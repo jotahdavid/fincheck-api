@@ -45,6 +45,13 @@ export class TransactionsRepository {
         value: true,
         date: true,
         type: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            icon: true,
+          },
+        },
       },
     });
   }
